@@ -6,7 +6,7 @@ banner () {
         echo "    Descarga herramientas comunes para hacking "
         echo
         echo
-        eccho
+        echo
         echo "    Gracias a todas las personas que escribieron las herramientas"
         echo
         echo "==============================================================="
