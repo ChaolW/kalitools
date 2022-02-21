@@ -38,7 +38,7 @@ function descarga_Actualiza {
         else
                 echo
                 echo "Descargando $SANITIZADO .."
-                git -C /opt/ clone $GITREPO
+                sudo git -C /opt/ clone $GITREPO
         fi
 }
 
@@ -46,25 +46,31 @@ function actualizar_SO {
         sudo apt update && sudo apt upgrade -y
 }
 
-
 main () {
+        USUARIO=`whoami`
         DIRACTUAL=`pwd`
         banner
-        echo "Revisando conexión a internet..."
-        ping -c1 google.com > /dev/null 2>&1
-      	if [ "$?" != 0 ]; then
-      		      echo "No hay internet! Revisa tu conexión!"
-      	else
-      		      echo "Tienes conexión, continuando..."
-                echo
-                echo "Primero voy a actualizar tu sistema. Por favor espera."
-                actualizar_SO
-                echo
-                echo "Voy a intentar descargar las herramientas de github, estudio puede tardar un rato."
-                descarga_Git
-                echo
-                echo "Feliz caza!"
-      	fi
+        if [ `id -u` -e 0 ]; then
+            echo "NO me executes como root, te lo pedire cuando lo necesite..."
+            exit
+        else
+            echo "Revisando conexión a internet..."
+            ping -c1 google.com > /dev/null 2>&1
+      	    if [ "$?" != 0 ]; then
+      		         echo "No hay internet! Revisa tu conexión!"
+      	    else
+      		         echo "Tienes conexión, continuando..."
+                     echo
+                     echo "Primero voy a actualizar tu sistema. Por favor espera."
+                     actualizar_SO
+                     echo
+                     echo "Voy a intentar descargar las herramientas de github, estudio puede tardar un rato."
+                     descarga_Git
+                     sudo chown -R $USUARIO:$USUARIO /opt/*
+                     echo
+                     echo "Feliz caza!"
+      	    fi
+        fi
 }
 
 main
