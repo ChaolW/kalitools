@@ -20,8 +20,7 @@ function descarga_Git {
 		do
 			NOMBRE_REPO=`sed 's|https://git.*.com/.*/||' <<< $GITREPO`
 			SANITIZADO=`sed 's|\.git||' <<< $NOMBRE_REPO`
-      echo $SANITIZADO
-      #descarga_Actualiza
+            descarga_Actualiza
 		done
 	else
 		echo
