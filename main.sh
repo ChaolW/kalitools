@@ -7,36 +7,22 @@ banner () {
         echo
         echo
         echo
-        echo "    Gracias a todas las personas que escribieron las herramientas"
+        echo "    Gracias a todas las personas que crearon las herramientas"
         echo
         echo "==============================================================="
 }
 
-function git_Download {
+function descarga_Git {
         echo
 	if [ -f githubtools.lst ]; then
-		if [ -f gitskip.lst ]; then
-			echo "Se encontro la list ade excepciones, descarga parcial"
-			for GITREPO in `cat githubtools.lst`
-			do
-				REPO_NAME=`sed 's|https://git.*.com/.*/||' <<< $GITREPO`
-				SANITIZED=`sed 's|\.git||' <<< $REPO_NAME`
-                                if grep -Fxq "$SANITIZED" $SCRIPTPATH/gitskip.lst; then
-										echo
-                                        echo "$SANITIZED esta en la lista, saltando..."
-                                else
-                                        download_Upgrade
-                                fi
-			done
-		else
-			echo "No se encontro gitskip.lst, descargando todo en la lista."
-			for GITREPO in `cat githubtools.lst`
-			do
-				REPO_NAME=`sed 's|https://github.com/.*/||' <<< $GITREPO`
-				SANITIZED=`sed 's|\.git||' <<< $REPO_NAME`
-				download_Upgrade
-			done
-		fi
+		echo "Se encontro la list descargas, comenzando..."
+		for GITREPO in `grep -v "^#" githubtools.lst`;
+		do
+			NOMBRE_REPO=`sed 's|https://git.*.com/.*/||' <<< $GITREPO`
+			SANITIZADO=`sed 's|\.git||' <<< $NOMBRE_REPO`
+      echo $SANITIZADO
+      #descarga_Actualiza
+		done
 	else
 		echo
 		echo "No puedo encontrar la lista de descarga! No puedo hacer nada!"
@@ -44,26 +30,26 @@ function git_Download {
 	fi
 }
 
-function download_Upgrade {
-        if [ -d "/opt/$SANITIZED" ]; then
+function descarga_Actualiza {
+        if [ -d "/opt/$SANITIZADO" ]; then
                 echo
-                echo "Actualizando $SANITIZED ..."
-                cd /opt/$SANITIZED
+                echo "Actualizando $SANITIZADO ..."
+                cd /opt/$SANITIZADO
                 git pull
         else
                 echo
-                echo "Descargando $SANITIZED .."
+                echo "Descargando $SANITIZADO .."
                 git -C /opt/ clone $GITREPO
         fi
 }
 
-function update_Os {
+function actualizar_SO {
         sudo apt update && sudo apt upgrade -y
 }
 
 
 main () {
-        SCRIPTPATH=`pwd`
+        DIRACTUAL=`pwd`
         banner
         echo "Revisando conexión a internet..."
         ping -c1 google.com > /dev/null 2>&1
@@ -73,10 +59,10 @@ main () {
       		      echo "Tienes conexión, continuando..."
                 echo
                 echo "Primero voy a actualizar tu sistema. Por favor espera."
-                update_Os
+                actualizar_SO
                 echo
                 echo "Voy a intentar descargar las herramientas de github, estudio puede tardar un rato."
-                git_Download
+                descarga_Git
                 echo
                 echo "Feliz caza!"
       	fi
