@@ -63,11 +63,11 @@ main () {
                      echo "Primero voy a actualizar tu sistema. Por favor espera."
                      actualizar_SO
                      echo
-                     echo "Voy a intentar descargar las herramientas de github, estudio puede tardar un rato."
+                     echo "Voy a intentar descargar las herramientas de github, esto puede tardar un rato."
                      descarga_Git
                      sudo chown -R "$USUARIO":"$USUARIO" /opt/*
                      echo
-                     echo "Feliz caza!"
+                     echo "Termine! Feliz caza!"
       	    fi
         fi
 }
