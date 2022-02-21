@@ -9,3 +9,5 @@ Para evitar que alguna de las herramientas se descarguen, solo comenta la linea 
 Todas las herramientas se descargan a /opt.
 
 Esto no instala las herramientas solo las descarga.
+
+No ejecutes como root, te pedira elevar privilegios cuando sea necesario.
